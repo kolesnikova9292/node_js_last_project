@@ -2,12 +2,18 @@ var express = require('express');
 var router = express.Router();
 
 var postRegistrationRouter = require('../controllers/registration');
+var postLoginRouter = require('../controllers/login');
 
 router.get('/', () => {});
 
 router.post(
   '/api/registration',
   postRegistrationRouter.postFunctionRegistration
+);
+
+router.post(
+  '/api/login',
+  postLoginRouter.postFunctionLogin
 );
 
 /*router.post('/api/registration', (req, res) => {

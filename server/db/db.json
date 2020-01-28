@@ -1,5 +1,61 @@
 {
   "users": [
-   
+    {
+      "firstName": "ап",
+      "id": 1,
+      "image": "",
+      "middleName": "ап",
+      "permission": {
+        "chat": {
+          "C": true,
+          "R": true,
+          "U": true,
+          "D": true
+        },
+        "news": {
+          "C": true,
+          "R": true,
+          "U": true,
+          "D": true
+        },
+        "settings": {
+          "C": true,
+          "R": true,
+          "U": true,
+          "D": true
+        }
+      },
+      "surName": "ап",
+      "username": "kg"
+    },
+    {
+      "firstName": "ап",
+      "id": 1,
+      "image": "",
+      "middleName": "ап",
+      "permission": {
+        "chat": {
+          "C": true,
+          "R": true,
+          "U": true,
+          "D": true
+        },
+        "news": {
+          "C": true,
+          "R": true,
+          "U": true,
+          "D": true
+        },
+        "settings": {
+          "C": true,
+          "R": true,
+          "U": true,
+          "D": true
+        }
+      },
+      "surName": "ап",
+      "username": "kg",
+      "password": "12345"
+    }
   ]
 }

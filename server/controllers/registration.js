@@ -12,32 +12,26 @@ function getFunction(req, res, next) {
 }
 
 function postFunctionRegistration(req, res) {
+
+  var newUser = {
+    firstName: req.body.firstName,
+    id: 1,
+    image: '',
+    middleName: req.body.middleName,
+    permission: {
+      chat: { C: true, R: true, U: true, D: true },
+      news: { C: true, R: true, U: true, D: true },
+      settings: { C: true, R: true, U: true, D: true }
+    },
+    surName: req.body.surName,
+    username: req.body.username,
+    password: req.body.password
+  };
   db.get('users')
-    //.push({ id: 1, title: 'lowdb is awesome' })
-    .push({ id: 1, title: 'lowdb is awesome' })
+    .push(newUser)
     .write();
-  res.redirect('/');
-  /*if (
-        !req.body &&
-        !req.body.concerts &&
-        !req.body.cities &&
-        !req.body.years
-      ) {
-        req.flash('info', 'Заполните нужные поля');
-        res.redirect('/admin#status');
-      } else {
-        Object.keys(req.body).forEach((item, i) => {
-          if (req.body[item]) {
-            db.get(`skills[${i}]`)
-              .set('number', req.body[item])
-              .write();
-          }
-        });
-    
-        req.flash('info', 'Данные обновлены');
-    
-        res.redirect('/admin#status');
-      }*/
+    res.json(newUser);
+  //res.redirect('/');
 }
 
 module.exports = {
