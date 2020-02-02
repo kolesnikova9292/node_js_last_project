@@ -19,4 +19,5 @@ mongoose.connect('mongodb://localhost:27017/fifthHometask');
 
 const User = mongoose.model('users', userSheme);
 
-module.exports = mongoose;
+//module.exports = { mongoose: mongoose, User: User };
+module.exports = User;
