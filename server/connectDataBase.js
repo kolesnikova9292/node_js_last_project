@@ -13,11 +13,17 @@ const userSheme = new Shema({
     },
     surName: String,
     username: String,
+    password: String,
+
+    accessToken: String,
+    refreshToken: String,
+    accessTokenExpiredAt: Date,
+    refreshTokenExpiredAt: Date,
 });
 
 mongoose.connect('mongodb://localhost:27017/fifthHometask');
 
 const User = mongoose.model('users', userSheme);
 
-//module.exports = { mongoose: mongoose, User: User };
-module.exports = User;
+module.exports = { mongoose: mongoose, User: User };
+//module.exports = User;

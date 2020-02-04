@@ -1,7 +1,9 @@
 const db = require('../db');
 var nodemailer = require('nodemailer');
-const mongoose = require('../connectDataBase');
-const User = require('../connectDataBase');
+const mongoose = require('../connectDataBase').mongoose;
+const User = require('../connectDataBase').User;
+var SHA256 = require('crypto-js/sha256');
+var uuid = require('uuid');
 
 function getFunction(req, res, next) {
     const data = {
@@ -14,6 +16,7 @@ function getFunction(req, res, next) {
 }
 
 function postFunctionRegistration(req, res) {
+    console.log(req.body.password);
     var newUser = new User({
         firstName: req.body.firstName,
         id: 1,
@@ -26,7 +29,12 @@ function postFunctionRegistration(req, res) {
         },
         surName: req.body.surName,
         username: req.body.username,
-        password: req.body.password,
+        password: SHA256(req.body.password),
+
+        accessToken: uuid(),
+        refreshToken: uuid(),
+        accessTokenExpiredAt: Date.now(),
+        refreshTokenExpiredAt: Date.now() + 1 * 60000 * 300,
     });
 
     newUser
