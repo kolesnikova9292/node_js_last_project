@@ -3,6 +3,8 @@ var router = express.Router();
 
 var postRegistrationRouter = require('../controllers/registration');
 var postLoginRouter = require('../controllers/login');
+var autharisationRouter = require('../controllers/autharisation');
+var updateUserInfoRouter = require('../controllers/updateuserinfo');
 
 router.get('/', () => {});
 
@@ -14,6 +16,21 @@ router.post(
 router.post(
   '/api/login',
   postLoginRouter.postFunctionLogin
+);
+
+router.post(
+  '/api/refresh-token',
+  autharisationRouter.postFunctionAutharisation
+);
+
+router.get(
+  '/api/profile',
+  autharisationRouter.authIfTokenExists
+);
+
+router.patch(
+  '/api/profile',
+  updateUserInfoRouter.updateOurUser
 );
 
 /*router.post('/api/registration', (req, res) => {
