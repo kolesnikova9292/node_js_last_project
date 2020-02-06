@@ -16,11 +16,20 @@ function getFunction(req, res, next) {
 }
 
 function postFunctionAutharisation(req, res) {
+    console.log(4444444)
+    console.log(req.body)
+    let headers=new Headers()
 
-    //res.json(newUser);
+    token=localStorage.getItem('token-data');
+
+    headers.append('authorization',  "Bearer "  + token["refreshToken"]);
+
+    
+    res.json(token);
 }
 
 function authIfTokenExists(req, res) {
+   // if(headers)
 
     //res.json(newUser);
 }

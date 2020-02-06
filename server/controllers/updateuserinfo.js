@@ -18,7 +18,9 @@ function getFunction(req, res, next) {
 function updateOurUser(req, res) {
     var user = User.find({ firstName: req.body.firstName, surName: req.body.surName });
 
-    user.exec(async function(err, docs) {
+    console.log(88888888888888)
+    console.log(req.body)
+    /*user.exec(async function(err, docs) {
         if (err) throw err;
 
 
@@ -47,7 +49,7 @@ function updateOurUser(req, res) {
                     });
                 }
             );
-    });
+    });*/
 
 }
 

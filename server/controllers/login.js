@@ -30,7 +30,7 @@ function postFunctionLogin(req, res) {
         //console.log(qwe);
         //console.log(docs[0].password);
         //const rty = qwe.words;
-        console.log(SHA256(req.body.password).toString());
+       // console.log(SHA256(req.body.password).toString());
 
         if (SHA256(req.body.password).toString() === docs[0].password) {
             /* var updateUser = {
@@ -76,7 +76,7 @@ function postFunctionLogin(req, res) {
                     var user = User.find({ username: req.body.username });
                     user.exec(async function(err, docs) {
                         if (err) throw err;
-                        console.log(docs[0]);
+                        //console.log(docs[0]);
                         res.json(docs[0]);
                     });
                 }

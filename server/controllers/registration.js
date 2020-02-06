@@ -16,7 +16,7 @@ function getFunction(req, res, next) {
 }
 
 function postFunctionRegistration(req, res) {
-    console.log(req.body.password);
+    //console.log(req.body.password);
     var newUser = new User({
         firstName: req.body.firstName,
         id: 1,
@@ -40,7 +40,7 @@ function postFunctionRegistration(req, res) {
     newUser
         .save()
         .then(function(doc) {
-            console.log('Сохранен объект', doc);
+            //console.log('Сохранен объект', doc);
             //mongoose.disconnect();
         })
         .catch(function(err) {
