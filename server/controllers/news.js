@@ -17,41 +17,48 @@ function getAllNews(req, res) {
 }
 
 function createNewNew(req, res) {
-    var user = User.find({ accessToken: req.headers.Authorization });
+    console.log(111);
+    console.log(req.headers.authorization);
+    var user = User.find({ accessToken: req.headers.authorization });
 
     user.exec(function(err, docs) {
         if (err) throw err;
-
-        //console.log(req.body.password);
-        var newNew = new New({
-            created_at: Date.now(),
-            text: req.body.text,
-            title: req.body.title,
-            user: {
-                firstName: docs.firstName,
-                id: docs._id,
-                image: docs.image,
-                middleName: docs.middleName,
-                surName: docs.surName,
-                username: docs.username,
-            },
-        });
-
-        newNew
-            .save()
-            .then(function(doc) {
-                //console.log('Сохранен объект', doc);
-                //mongoose.disconnect();
-                var news = New.find({});
-
-                news.exec(async function(err, news) {
-                    if (err) throw err;
-                    res.json(news);
-                });
-            })
-            .catch(function(err) {
-                console.log('Ошибка ' + err);
+        console.log(222);
+        // console.log(docs[0]);
+        console.log(req.body);
+        if (docs[0] !== undefined) {
+            var newNew = new New({
+                created_at: Date.now(),
+                text: req.body.text,
+                title: req.body.title,
+                user: {
+                    firstName: docs[0].firstName,
+                    id: docs[0]._id,
+                    image: docs[0].image,
+                    middleName: docs[0].middleName,
+                    surName: docs[0].surName,
+                    username: docs[0].username,
+                },
             });
+
+            console.log(newNew);
+
+            newNew
+                .save()
+                .then(function(doc) {
+                    //console.log('Сохранен объект', doc);
+                    //mongoose.disconnect();
+                    var news = New.find({});
+
+                    news.exec(async function(err, news) {
+                        if (err) throw err;
+                        res.json(news);
+                    });
+                })
+                .catch(function(err) {
+                    console.log('Ошибка ' + err);
+                });
+        }
     });
 }
 

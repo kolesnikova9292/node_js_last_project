@@ -6,16 +6,6 @@ const mongoose = require('../connectDataBase').mongoose;
 const User = require('../connectDataBase').User;
 var formidable = require('formidable');
 
-function getFunction(req, res, next) {
-    const data = {
-        msgsemail: req.flash('info')[0],
-        products: db.get('products').value(),
-        skills: db.get('skills').value(),
-    };
-
-    res.render('index', data);
-}
-
 function updateOurUser(req, res) {
     var warnString = '';
 

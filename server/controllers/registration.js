@@ -5,16 +5,6 @@ const User = require('../connectDataBase').User;
 var SHA256 = require('crypto-js/sha256');
 var uuid = require('uuid');
 
-function getFunction(req, res, next) {
-    const data = {
-        msgsemail: req.flash('info')[0],
-        products: db.get('products').value(),
-        skills: db.get('skills').value(),
-    };
-
-    res.render('index', data);
-}
-
 function postFunctionRegistration(req, res) {
     //console.log(req.body.password);
     var newUser = new User({
@@ -53,6 +43,5 @@ function postFunctionRegistration(req, res) {
 }
 
 module.exports = {
-    getFunction: getFunction,
     postFunctionRegistration: postFunctionRegistration,
 };

@@ -30,8 +30,6 @@ router.post('/api/news', newsRouter.createNewNew);
 
 router.delete('/api/users/:id', updateUserInfoRouter.deleteUser);
 
-router.delete('/api/users/:id', updateUserInfoRouter.deleteUser);
-
 router.get('/api/users', updateUserInfoRouter.getAllUsers);
 
 module.exports = router;

@@ -38,7 +38,7 @@ const newsSheme = new Shema({
 mongoose.connect('mongodb://localhost:27017/fifthHometask');
 
 const User = mongoose.model('users', userSheme);
-const New = mongoose.model('news', userSheme);
+const New = mongoose.model('news', newsSheme);
 
 module.exports = { mongoose: mongoose, User: User, New: New };
 //module.exports = User;
