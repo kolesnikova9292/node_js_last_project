@@ -19,7 +19,6 @@ function postFunctionRegistration(req, res) {
     //console.log(req.body.password);
     var newUser = new User({
         firstName: req.body.firstName,
-        id: 1,
         image: '',
         middleName: req.body.middleName,
         permission: {
@@ -31,10 +30,10 @@ function postFunctionRegistration(req, res) {
         username: req.body.username,
         password: SHA256(req.body.password),
 
-        accessToken: uuid(),
-        refreshToken: uuid(),
-        accessTokenExpiredAt: Date.now(),
-        refreshTokenExpiredAt: Date.now() + 1 * 60000 * 300,
+        accessToken: null,
+        refreshToken: null,
+        accessTokenExpiredAt: null,
+        refreshTokenExpiredAt: null,
     });
 
     newUser

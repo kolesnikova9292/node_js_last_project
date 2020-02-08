@@ -10,6 +10,11 @@ MongoClient.connect(url, function(err, client) {
     db.createCollection('users', function(err, result) {
         if (err) throw err;
         console.log('database and Collection created!');
+        //client.close();
+    });
+    db.createCollection('news', function(err, result) {
+        if (err) throw err;
+        console.log('database and Collection created!');
         client.close();
     });
 });

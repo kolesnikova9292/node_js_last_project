@@ -4,6 +4,7 @@ var uuid = require('uuid');
 var SHA256 = require('crypto-js/sha256');
 const mongoose = require('../connectDataBase').mongoose;
 const User = require('../connectDataBase').User;
+var formidable = require('formidable');
 
 function getFunction(req, res, next) {
     const data = {
@@ -16,10 +17,45 @@ function getFunction(req, res, next) {
 }
 
 function updateOurUser(req, res) {
-    var user = User.find({ firstName: req.body.firstName, surName: req.body.surName });
+    var warnString = '';
 
-    console.log(88888888888888)
-    console.log(req.body)
+    var form = new formidable.IncomingForm();
+
+    form.parse(req, function(err, fields, files) {
+        /*if (fields.name && fields.price && files.photo.size > 0) {
+      var oldpath = files.photo.path;
+      var newpath =
+        path.join(process.cwd(), './server/public/assets/uploads/') +
+        files.photo.name;
+
+      fs.rename(oldpath, newpath, function(err) {
+        if (err) {
+          cb(err);
+        } else {
+          warnString = 'Картинка загружена';
+          cb(warnString);
+        }
+      });
+      db.get('products')
+        .push({
+          src: './assets/uploads/' + files.photo.name,
+          name: fields.name,
+          price: fields.price
+        })
+        .write();
+    } else {
+      warnString = 'Заполните все поля и загрузите картинку';
+      cb(warnString);
+    }*/
+    });
+
+    var user = User.find({
+        firstName: req.body.firstName,
+        surName: req.body.surName,
+    });
+
+    console.log(88888888888888);
+    console.log(req.body);
     /*user.exec(async function(err, docs) {
         if (err) throw err;
 
@@ -50,9 +86,21 @@ function updateOurUser(req, res) {
                 }
             );
     });*/
+}
 
+function deleteUser(req, res) {}
+
+function getAllUsers(req, res) {
+    var users = User.find({});
+
+    users.exec(async function(err, users) {
+        if (err) throw err;
+        res.json(users);
+    });
 }
 
 module.exports = {
-    updateOurUser: updateOurUser
+    updateOurUser: updateOurUser,
+    deleteUser: deleteUser,
+    getAllUsers: getAllUsers,
 };

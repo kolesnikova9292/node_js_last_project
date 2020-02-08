@@ -21,9 +21,24 @@ const userSheme = new Shema({
     refreshTokenExpiredAt: Date,
 });
 
+const newsSheme = new Shema({
+    created_at: Date,
+    text: String,
+    title: String,
+    user: {
+        firstName: String,
+        id: String,
+        image: String,
+        middleName: String,
+        surName: String,
+        username: String,
+    },
+});
+
 mongoose.connect('mongodb://localhost:27017/fifthHometask');
 
 const User = mongoose.model('users', userSheme);
+const New = mongoose.model('news', userSheme);
 
-module.exports = { mongoose: mongoose, User: User };
+module.exports = { mongoose: mongoose, User: User, New: New };
 //module.exports = User;

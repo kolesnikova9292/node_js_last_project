@@ -16,26 +16,25 @@ function getFunction(req, res, next) {
 }
 
 function postFunctionAutharisation(req, res) {
-    console.log(4444444)
-    console.log(req.body)
-    let headers=new Headers()
+    console.log(4444444);
+    console.log(req.body);
+    /* let headers=new Headers()
 
     token=localStorage.getItem('token-data');
 
     headers.append('authorization',  "Bearer "  + token["refreshToken"]);
 
     
-    res.json(token);
+    res.json(token);*/
 }
 
 function authIfTokenExists(req, res) {
-   // if(headers)
-
+    // if(headers)
     //res.json(newUser);
 }
 
 module.exports = {
     getFunction: getFunction,
     postFunctionAutharisation: postFunctionAutharisation,
-    authIfTokenExists: authIfTokenExists
+    authIfTokenExists: authIfTokenExists,
 };

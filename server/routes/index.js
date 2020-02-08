@@ -5,62 +5,33 @@ var postRegistrationRouter = require('../controllers/registration');
 var postLoginRouter = require('../controllers/login');
 var autharisationRouter = require('../controllers/autharisation');
 var updateUserInfoRouter = require('../controllers/updateuserinfo');
-
-router.get('/', () => {});
-
-router.post(
-  '/api/registration',
-  postRegistrationRouter.postFunctionRegistration
-);
+var newsRouter = require('../controllers/news');
 
 router.post(
-  '/api/login',
-  postLoginRouter.postFunctionLogin
+    '/api/registration',
+    postRegistrationRouter.postFunctionRegistration
 );
 
+router.post('/api/login', postLoginRouter.postFunctionLogin);
+
+//сделать позже
 router.post(
-  '/api/refresh-token',
-  autharisationRouter.postFunctionAutharisation
+    '/api/refresh-token',
+    autharisationRouter.postFunctionAutharisation
 );
 
-router.get(
-  '/api/profile',
-  autharisationRouter.authIfTokenExists
-);
+router.get('/api/profile', autharisationRouter.authIfTokenExists);
 
-router.patch(
-  '/api/profile',
-  updateUserInfoRouter.updateOurUser
-);
+router.patch('/api/profile', updateUserInfoRouter.updateOurUser);
 
-/*router.post('/api/registration', (req, res) => {
-  console.log(req.body);
-  var newUser = {
-    firstName: req.body.firstName,
-    id: 1,
-    image: '',
-    middleName: req.body.middleName,
-    permission: {
-      chat: { C: true, R: true, U: true, D: true },
-      news: { C: true, R: true, U: true, D: true },
-      settings: { C: true, R: true, U: true, D: true }
-    },
-    surName: req.body.surName,
-    username: req.body.username
-  };
-});*/
+router.get('/api/news', newsRouter.getAllNews);
 
-/*var indexRouter = require('../controller/index');
-var loginRouter = require('../controller/login');
-var adminRouter = require('../controller/admin');
+router.post('/api/news', newsRouter.createNewNew);
 
-router.get('/', indexRouter.getFunction);
-router.post('/', indexRouter.postFunction);
+router.delete('/api/users/:id', updateUserInfoRouter.deleteUser);
 
-router.get('/login', loginRouter.getFunction);
-router.post('/login', loginRouter.postFunction);
-router.get('/admin', adminRouter.getFunction);
-router.post('/admin/skills', adminRouter.postFunctionForSkills);
-router.post('/admin/upload', adminRouter.postFunctionForUploadPicture);*/
+router.delete('/api/users/:id', updateUserInfoRouter.deleteUser);
+
+router.get('/api/users', updateUserInfoRouter.getAllUsers);
 
 module.exports = router;
