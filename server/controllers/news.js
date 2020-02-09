@@ -17,15 +17,11 @@ function getAllNews(req, res) {
 }
 
 function createNewNew(req, res) {
-    console.log(111);
-    console.log(req.headers.authorization);
     var user = User.find({ accessToken: req.headers.authorization });
 
     user.exec(function(err, docs) {
         if (err) throw err;
-        console.log(222);
-        // console.log(docs[0]);
-        console.log(req.body);
+
         if (docs[0] !== undefined) {
             var newNew = new New({
                 created_at: Date.now(),
@@ -41,13 +37,9 @@ function createNewNew(req, res) {
                 },
             });
 
-            console.log(newNew);
-
             newNew
                 .save()
                 .then(function(doc) {
-                    //console.log('Сохранен объект', doc);
-                    //mongoose.disconnect();
                     var news = New.find({});
 
                     news.exec(async function(err, news) {
@@ -60,48 +52,6 @@ function createNewNew(req, res) {
                 });
         }
     });
-}
-
-function updateOurUser(req, res) {
-    var warnString = '';
-
-    var form = new formidable.IncomingForm();
-
-    form.parse(req, function(err, fields, files) {
-        /*if (fields.name && fields.price && files.photo.size > 0) {
-      var oldpath = files.photo.path;
-      var newpath =
-        path.join(process.cwd(), './server/public/assets/uploads/') +
-        files.photo.name;
-
-      fs.rename(oldpath, newpath, function(err) {
-        if (err) {
-          cb(err);
-        } else {
-          warnString = 'Картинка загружена';
-          cb(warnString);
-        }
-      });
-      db.get('products')
-        .push({
-          src: './assets/uploads/' + files.photo.name,
-          name: fields.name,
-          price: fields.price
-        })
-        .write();
-    } else {
-      warnString = 'Заполните все поля и загрузите картинку';
-      cb(warnString);
-    }*/
-    });
-
-    var user = User.find({
-        firstName: req.body.firstName,
-        surName: req.body.surName,
-    });
-
-    console.log(88888888888888);
-    console.log(req.body);
 }
 
 module.exports = {

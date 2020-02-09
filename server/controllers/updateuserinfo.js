@@ -5,77 +5,117 @@ var SHA256 = require('crypto-js/sha256');
 const mongoose = require('../connectDataBase').mongoose;
 const User = require('../connectDataBase').User;
 var formidable = require('formidable');
+var path = require('path');
+var fs = require('fs');
 
 function updateOurUser(req, res) {
     var warnString = '';
 
     var form = new formidable.IncomingForm();
+    console.log(111);
 
     form.parse(req, function(err, fields, files) {
-        /*if (fields.name && fields.price && files.photo.size > 0) {
-      var oldpath = files.photo.path;
-      var newpath =
-        path.join(process.cwd(), './server/public/assets/uploads/') +
-        files.photo.name;
+        var user = User.find({ accessToken: req.headers.authorization });
 
-      fs.rename(oldpath, newpath, function(err) {
-        if (err) {
-          cb(err);
-        } else {
-          warnString = 'Картинка загружена';
-          cb(warnString);
-        }
-      });
-      db.get('products')
-        .push({
-          src: './assets/uploads/' + files.photo.name,
-          name: fields.name,
-          price: fields.price
-        })
-        .write();
-    } else {
-      warnString = 'Заполните все поля и загрузите картинку';
-      cb(warnString);
-    }*/
-    });
+        user.exec(function(err, docs) {
+            if (err) throw err;
 
-    var user = User.find({
-        firstName: req.body.firstName,
-        surName: req.body.surName,
-    });
+            if (docs[0] !== undefined) {
+                User.updateOne(
+                    { accessToken: req.headers.authorization },
+                    {
+                        firstName: fields.firstName,
+                        surName: fields.surName,
+                        middleName: fields.middleName,
+                    },
+                    function(err, result) {
+                        if (
+                            fields.oldPassword !== '' &&
+                            fields.newPassword !== ''
+                        ) {
+                            var user = User.find({
+                                accessToken: req.headers.authorization,
+                            });
 
-    console.log(88888888888888);
-    console.log(req.body);
-    /*user.exec(async function(err, docs) {
-        if (err) throw err;
+                            user.exec(function(err, docs) {
+                                console.log(req.body.oldPassword);
+                                console.log(
+                                    SHA256(req.body.oldPassword).toString()
+                                );
+                                console.log(docs[0].password);
 
+                                console.log(111);
 
-            User.updateOne(
-                { id: docs.id },
-                {
-                    firstName: req.body.firstName,
-                    middleName: req.body.middleName,
-                    surName: req.body.surName,
-                    password: SHA256(req.body.newPassword),
-                    image: req.body.avatar
+                                if (
+                                    docs[0] !== undefined &&
+                                    SHA256(fields.oldPassword).toString() ===
+                                        docs[0].password
+                                ) {
+                                    console.log(222);
+                                    User.updateOne(
+                                        {
+                                            accessToken:
+                                                req.headers.authorization,
+                                        },
+                                        {
+                                            password: SHA256(
+                                                fields.newPassword
+                                            ),
+                                        }
+                                    );
+                                }
+                            });
+                        }
 
-                },
-                function(err, result) {
-                    // mongoose.disconnect();
-                    if (err) return console.log(err);
-                    //console.log(docs);
-                    const currentUser = docs;
-                    // console.log(User.find({ id: docs.id }));
-                    // res.json(User.find({ id: docs.id }));
-                    var user = User.find({ firstName: req.body.firstName, surName: req.body.surName });
-                    user.exec(async function(err, docs) {
-                        if (err) throw err;
-                        console.log(docs[0]);
-                        res.json(docs[0]);
-                    });
+                        console.log(222);
+                        console.log(files.avatar);
+
+                        if (files.avatar != null) {
+                            console.log(333);
+                            var oldpath = files.avatar.path;
+                            var newpath =
+                                path.join(
+                                    process.cwd(),
+                                    './public/assets/img/'
+                                ) + files.avatar.name;
+
+                            fs.rename(oldpath, newpath, function(err) {
+                                if (err) {
+                                    // cb(err);
+                                } else {
+                                    warnString = 'Картинка загружена';
+                                    //cb(warnString);
+                                }
+                            });
+
+                            console.log(444);
+
+                            User.updateOne(
+                                {
+                                    accessToken: req.headers.authorization,
+                                },
+                                {
+                                    //image: './assets/img/' + files.avatar.name,
+                                    image: 'fjdfjdfjh',
+                                }
+                            );
+                            console.log(555);
+                        }
+                    }
+                );
+            }
+
+            var user = User.find({
+                accessToken: req.headers.authorization,
+            });
+
+            user.exec(function(err, docs) {
+                if (docs[0] !== undefined) {
+                    res.json(docs[0]);
                 }
-            );
-    });*/
+            });
+        });
+    });
 }
 
 function deleteUser(req, res) {}
