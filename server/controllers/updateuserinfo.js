@@ -173,7 +173,17 @@ function updateOurUser(req, res) {
 }
       
 
-function deleteUser(req, res) {}
+function deleteUser(req, res) {
+    const idOfUser = req.params.id;
+
+    var userDelete = User.deleteOne({ id: idOfUser })
+
+    userDelete.exec(async function(err, users) {
+        if (err) throw err;
+       // res.json(users);
+    });
+
+}
 
 function getAllUsers(req, res) {
     var users = User.find({});

@@ -7,6 +7,7 @@ var uuid = require('uuid');
 
 function postFunctionRegistration(req, res) {
     var newUser = new User({
+        id: uuid(),
         firstName: req.body.firstName,
         image: '',
         middleName: req.body.middleName,

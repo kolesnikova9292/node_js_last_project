@@ -24,6 +24,7 @@ function createNewNew(req, res) {
 
         if (docs[0] !== undefined) {
             var newNew = new New({
+                id: uuid(),
                 created_at: Date.now(),
                 text: req.body.text,
                 title: req.body.title,
@@ -54,7 +55,46 @@ function createNewNew(req, res) {
     });
 }
 
+function updateTheNew(req, res) {
+    console.log(req.body)
+    console.log(req.params.id)
+    const idOdNew = req.params.id;
+
+    var this_new = New.find({ id: idOdNew });
+
+    this_new.exec(function(err, docs) {
+        if (err) throw err;
+
+        if (docs[0] !== undefined) {
+
+
+            var objectForUpdating = new Object();
+            objectForUpdating.title = req.body.title;
+            objectForUpdating.text = req.body.text;
+console.log(111)
+console.log(objectForUpdating)
+
+            New.updateOne(
+                { id: idOdNew },
+                objectForUpdating,
+                function(err, result) {
+                    var news = New.find({});
+
+                    news.exec(async function(err, news) {
+                        if (err) throw err;
+                        res.json(news);
+                    });
+                    
+
+                });
+            }
+        });
+    }
+
+
+
 module.exports = {
     getAllNews: getAllNews,
     createNewNew: createNewNew,
+    updateTheNew: updateTheNew,
 };

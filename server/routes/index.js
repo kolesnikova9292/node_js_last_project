@@ -32,4 +32,8 @@ router.delete('/api/users/:id', updateUserInfoRouter.deleteUser);
 
 router.get('/api/users', updateUserInfoRouter.getAllUsers);
 
+router.patch('/api/news/:id', newsRouter.updateTheNew);
+
+router.get('*', (req, res) => { res.redirect('/') });
+
 module.exports = router;

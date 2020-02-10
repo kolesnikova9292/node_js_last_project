@@ -3,6 +3,7 @@ const Shema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
 const userSheme = new Shema({
+    id: String,
     firstName: String,
     image: String,
     middleName: String,
@@ -22,6 +23,7 @@ const userSheme = new Shema({
 });
 
 const newsSheme = new Shema({
+    id: String,
     created_at: Date,
     text: String,
     title: String,
