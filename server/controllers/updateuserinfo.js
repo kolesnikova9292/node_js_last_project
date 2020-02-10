@@ -21,7 +21,68 @@ function updateOurUser(req, res) {
             if (err) throw err;
 
             if (docs[0] !== undefined) {
+
+
+                var objectForUpdating = new Object();
+                objectForUpdating.firstName = fields.firstName;
+                objectForUpdating.surName = fields.surName;
+                objectForUpdating.middleName = fields.middleName;
+
+                if (
+                    fields.oldPassword !== '' &&
+                    fields.newPassword !== '' && SHA256(fields.oldPassword).toString() ===
+                    docs[0].password
+                ) {
+                    objectForUpdating.password =  SHA256(
+                        fields.newPassword
+                    )
+                }
+
+                if (files.avatar != null) {
+                    console.log(333);
+                    var oldpath = files.avatar.path;
+                    var newpath =
+                        path.join(
+                            process.cwd(),
+                            './build/assets/img/'
+                        ) + files.avatar.name;
+
+                    fs.rename(oldpath, newpath, function(err) {
+                        if (err) {
+                            // cb(err);
+                        } else {
+                            warnString = 'Картинка загружена';
+                            //cb(warnString);
+                        }
+                    });
+
+                    console.log(444);
+
+                    objectForUpdating.image = './assets/img/' + files.avatar.name;
+                }
+
                 User.updateOne(
+                    { accessToken: req.headers.authorization },
+                    objectForUpdating,
+                    function(err, result) {
+
+                        var user = User.find({
+                            accessToken: req.headers.authorization,
+                        });
+            
+                        user.exec(function(err, docs) {
+                            if (docs[0] !== undefined) {
+                                res.json(docs[0]);
+                            }
+                        });
+
+                    });
+
+
+
+
+
+               /* User.updateOne(
                     { accessToken: req.headers.authorization },
                     {
                         firstName: fields.firstName,
@@ -103,20 +164,14 @@ function updateOurUser(req, res) {
                         }
                     }
                 );
-            }
+            }*/
 
-            var user = User.find({
-                accessToken: req.headers.authorization,
-            });
-
-            user.exec(function(err, docs) {
-                if (docs[0] !== undefined) {
-                    res.json(docs[0]);
-                }
-            });
-        });
+            
+        }
     });
+})
 }
+      
 
 function deleteUser(req, res) {}
 
