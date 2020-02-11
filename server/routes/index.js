@@ -14,7 +14,6 @@ router.post(
 
 router.post('/api/login', postLoginRouter.postFunctionLogin);
 
-//сделать позже
 router.post(
     '/api/refresh-token',
     autharisationRouter.postFunctionAutharisation
@@ -32,7 +31,11 @@ router.delete('/api/users/:id', updateUserInfoRouter.deleteUser);
 
 router.get('/api/users', updateUserInfoRouter.getAllUsers);
 
+router.patch('/api/users/:id/permission', updateUserInfoRouter.updatePermissionOfUser);
+
 router.patch('/api/news/:id', newsRouter.updateTheNew);
+
+router.delete('/api/news/:id', newsRouter.deleteTheNew);
 
 router.get('*', (req, res) => { res.redirect('/') });
 

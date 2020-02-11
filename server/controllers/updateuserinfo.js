@@ -194,8 +194,32 @@ function getAllUsers(req, res) {
     });
 }
 
+function updatePermissionOfUser(req, res) {
+    console.log(req.body);
+    const idOfUser = req.params.id;
+
+    var this_user = User.find({ id: idOfUser });
+
+    this_user.exec(function(err, docs) {
+        if (err) throw err;
+
+        if (docs[0] !== undefined) {
+
+
+            User.updateOne(
+                { id: idOfUser },
+                req.body,
+                function(err, result) {
+
+                });
+            }
+        });
+
+}
+
 module.exports = {
     updateOurUser: updateOurUser,
     deleteUser: deleteUser,
     getAllUsers: getAllUsers,
+    updatePermissionOfUser: updatePermissionOfUser
 };

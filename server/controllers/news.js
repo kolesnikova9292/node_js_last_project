@@ -91,10 +91,29 @@ console.log(objectForUpdating)
         });
     }
 
+    function deleteTheNew(req, res) {
+        const idOfNew = req.params.id;
+    
+        var newDelete = New.deleteOne({ id: idOfNew })
+    
+        newDelete.exec(function(err, users) {
+            if (err) throw err;
+            var news = New.find({});
+
+            news.exec(async function(err, news) {
+                if (err) throw err;
+                res.json(news);
+            });
+           // res.json(users);
+        });
+    
+    }
+
 
 
 module.exports = {
     getAllNews: getAllNews,
     createNewNew: createNewNew,
     updateTheNew: updateTheNew,
+    deleteTheNew: deleteTheNew
 };
