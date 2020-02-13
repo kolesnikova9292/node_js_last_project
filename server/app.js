@@ -7,6 +7,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
+const User = require('./connectDataBase').User;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,7 +40,8 @@ io.on('connection', function (socket) {
 
     // событие наступает когда пользователь впервые заходит в чат
     socket.on('users:connect', function (user) {
-      // установим комнату по умолчанию
+      if (Object.values(users).filter(e => e.username === user.username).length <= 0){
+              // установим комнату по умолчанию
       let defaultRoom = rooms[0];
       // создадим объект пользователя
       users[socket.id] = {};
@@ -54,71 +56,95 @@ io.on('connection', function (socket) {
       // присоеденим его к команте по умолчанию
       socket.join(defaultRoom);
 
-      console.log(Object.values(users));
+      //console.log(Object.values(users));
       socket.emit('users:list', Object.values(users))
       //socket.send
 
       socket.broadcast
         .to(defaultRoom)
         .emit('users:add', users[socket.id]);
-        console.log(updateUsers(defaultRoom))
+      //  console.log(updateUsers(defaultRoom))
 
-      /*socket.emit('users:list', updateUsers(defaultRoom))
-      socket.broadcast
-        .to(defaultRoom)
-        .emit('users:add', updateUsers(defaultRoom));
-        console.log(updateUsers(defaultRoom))*/
-
-
-
-
-     // socket.emit('users:list', Object.entries(users))
-     // socket.emit('users:add', users[socket.id])
-      //socket.send(Object.entries(users)).to().emit('users:list');
-      //socket.broadcast.to(users[socket.id].activeRoom).emit('users:add', users[socket.id])
-
-     // socket.broadcast.to(users[socket.id].activeRoom).json.emit('users:add', users[socket.id]);
-
-      //socket.emit('users:add', users[socket.id])
-
-      /*  socket.broadcast
-        .to(users)
-        .emit('users:add', users[socket.id]);*/
+      }
     });
-
-    /*socket.on('users:list', (message) => {
-      socket.send(message);
-    });
-
-    socket.on('users:add', (message) => {
-      socket
-        .broadcast
-        .send(message);
-    });*/
-
-   /* socket.on('users:list', function (users) {
-      socket.send(users);
-    });
-
-    socket.on('users:add', function (users) {
-      socket
-    .broadcast
-    .send(users);
-    });*/
 
     socket.on('message:add', function (data) {
-
+    //  console.log(data);
       messageHistory.push({text: data.text, senderId: data.senderId, recipientId : data.recipientId});
 
-      socket.send({text: data.text, senderId: data.senderId, recipientId : data.recipientId});
+      socket.emit('message:add', { text: data.text,  senderId: data.senderId, recipientId: data.recipientId})
+
+     // messageHistory.push({text: data.text, senderId: data.senderId, recipientId : data.recipientId});
+
+     // socket.send({text: data.text, senderId: data.senderId, recipientId : data.recipientId});
     });
 
     socket.on('message:history', function (data) {
+     //console.log(data)
 
-      var messages = messageHistory.filter(word => word.recipientId == data.recipientId && word.userId == data.userId);
-      socket.send(messageHistory);
-      console.log(messageHistory)
+   //  console.log(messageHistory)
+
+    //var messages = messageHistory.filter(word => word.senderId == data.userId && word.recipientId == data.recipientId);
+   // var messages = messageHistory.filter(word => word.recipientId == data.userId && word.senderId == data.recipientId ||
+   //   word.senderId == data.userId && word.recipientId == data.recipientId);
+   messageHistory.forEach(element => {
+    // console.log(element)
+     if(element.senderId == data.userId){
+     //  console.log(11111)
+     }
+   });
+   var messages = messageHistory.filter(word => word.senderId == data.userId && word.recipientId == data.recipientId || 
+                                        word.recipientId == data.userId && word.senderId == data.recipientId);
+  //  console.log(messages)
+
+    socket.emit('message:history', messages)
+     /* socket.send(messageHistory);
+      console.log(messageHistory)*/
     });
+
+    socket.on('disconnect', function (data) {
+      let defaultRoom = rooms[0];
+      console.log(socket.id);
+      console.log(users)
+
+      socket.broadcast
+        .to(defaultRoom)
+        .emit('users:leave', socket.id);
+
+        delete users[socket.id]
+
+
+
+      /*var LocalStorage = require('node-localstorage').LocalStorage,
+localStorage = new LocalStorage('./scratch');
+console.log(localStorage)*/
+     /* if (typeof window !== "undefined") {
+        console.log(11111)
+      var myStorage = window.localStorage;
+      //let headers = new Headers();
+      console.log(data)
+      const token = myStorage.getItem('token-data');
+
+      const accessToken = token['accessToken'];
+
+      var user = User.find({ accessToken: accessToken });
+
+        user.exec(function(err, docs) {
+            if (err) throw err;
+
+            if (
+                docs[0] !== undefined 
+            ) {
+                //res.json(docs[0]);
+                console.log(docs[0])
+            }
+        });
+      }*/
+
+
+
+      
+     });
   });
 
 module.exports = app;
